@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&amp;display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        body {
+    font-family: "Open Sans", sans-serif;
+    line-height: 1.6;
+}
+
+button, input, optgroup, select, textarea {
+display: block;
+  width: 100%;
+  height: calc(2.25rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+   height: calc(2.875rem + 2px);
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  border-radius: 0.3rem;
+
+  border-radius: 0.25rem !important;
+}
+
+
+.add-todo-input,
+.edit-todo-input {
+    outline: none;
+}
+
+.add-todo-input:focus,
+.edit-todo-input:focus {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.view-opt-label,
+.date-label {
+    font-size: 0.8rem;
+}
+
+.edit-todo-input {
+    font-size: 1.7rem !important;
+}
+
+
+.todo-item.editing .todo-actions .edit-icon {
+    display: none !important;
+}
+</style>
+</head>
+<body>
+
+<div class="container m-5 p-2 rounded mx-auto bg-light shadow">
+        <!-- App title section -->
+        <div class="row m-1 p-4">
+            <div class="col">
+                <div class="p-1 h1 text-primary text-center mx-auto display-inline-block">
+                    <i class="fa fa-check bg-primary text-white rounded p-2"></i>
+                    <u>My Todo-s</u>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Create todo section -->
+        <div class="row m-1 p-3">
+            <div class="col col-11 mx-auto">
+                <div class="row bg-white rounded shadow-sm p-4 add-todo-wrapper align-items-center justify-content-center">
+                    <form method="POST" action="/">
+                    <div class="col">
+                        {% csrf_token %}
+                        {{form.title}}
+                    </div>
+                    <div style="padding-top: 15px" class="col-auto">
+                       <input class="btn btn-primary" type="submit" name="Create Task">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="p-2 mx-4 border-black-25 border-bottom"></div>
+        <!-- Todo list section -->
+        <div class="row mx-1 px-5 pb-3 w-80">
+            <div class="col mx-auto">
+                <!-- Todo Item 1 -->
+                {% for tasks in task %}
+                <div class="row px-3 align-items-center todo-item rounded">
+                    <div class="col px-1 m-1 d-flex align-items-center">
+                        {% if tasks.complete == True %}
+                        <strike><input type="text" class="form-control form-control-lg border-0 edit-todo-input bg-transparent rounded px-3" readonly value="{{tasks}}" title="{{tasks}}" /></strike>
+                         {% else %}
+                        <input type="text" class="form-control form-control-lg border-0 edit-todo-input bg-transparent rounded px-3" readonly value="{{tasks}}" title="{{tasks}}" />
+<!--                        <input type="text" class="form-control form-control-lg border-0 edit-todo-input rounded px-3 d-none" value="Buy groceries for next week" />-->
+                         {% endif %}
+                    </div>
+                    <div class="col-auto m-1 p-0 px-3 d-none">
+                    </div>
+                    <div class="col-auto m-1 p-0 todo-actions">
+                        <div class="row d-flex align-items-center justify-content-end">
+                            <h5 class="m-0 p-0 px-2">
+                                <a href="{% url 'update_task' tasks.id %}"><i class="fa fa-pencil text-info btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Edit todo"></i></a>
+                            </h5>
+                            <h5 class="m-0 p-0 px-2">
+                                <a href="{% url 'delete' tasks.id %}"><i class="fa fa-trash-o text-danger btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Delete todo"></i></a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
